@@ -8,7 +8,7 @@ on:
 jobs:
   get-artifact:
     name: Get Artifact
-    runs-on: ubunut-20.04
+    runs-on: ubuntu-20.04
     env:
       _BRANCH: "main"
       _ARTIFACT_NAME: "build-artifact.zip"
