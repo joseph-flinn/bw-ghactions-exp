@@ -11,6 +11,7 @@ jobs:
     runs-on: ubunut-20.04
     env:
       _BRANCH: "main"
+      _ARTIFACT_NAME: "build-artifact.zip"
     steps:
       - name: Checkout repo
         uses: actions/checkout@5a4ac9002d0be2fb38bd78e4b4dbde5606d7042f
@@ -20,7 +21,7 @@ jobs:
             -s -H "Accept: application/vnd.github.v3+json" \
             -H "Authorization: token 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" \
             https://api.github.com/repos/bitwarden/server/actions/runs \
-            | jq -c '.workflow_runs | map(select( .head_branch == "$_BRANCH" ))' 
+            | jq -c --arg branch_name "$_BRANCH" '.workflow_runs | map(select( .head_branch == "$branch_name" ))' 
           )
           #-H "Authorization: token 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" \
 
@@ -37,7 +38,8 @@ jobs:
           )
 
           artifact_download_url=$(
-            echo $latest_artifacts | jq -r '.[] | select( .name == "docker-stub.zip").archive_download_url'
+            echo $latest_artifacts \
+              | jq -r --arg artifact_name "$_BUILD_ARTIFACT" '.[] | select( .name == "$artifact_name").archive_download_url'
           )
 
           echo $artifact_download_url
