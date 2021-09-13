@@ -20,7 +20,7 @@ jobs:
         run: |
           workflows=$(curl \
             -s -H "Accept: application/vnd.github.v3+json" \
-            -H "Authorization: token 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" \
+            -H "Authorization: token ${{ secrets.GH_TOKEN }}" \
             https://api.github.com/repos/bitwarden/server/actions/runs \
             | jq -c --arg branch_name "$_BRANCH" '.workflow_runs | map(select( .head_branch == "$branch_name" ))' 
           )
@@ -34,7 +34,7 @@ jobs:
 
           latest_artifacts=$(curl \
             -s -H "Accept: application/vnd.github.v3+json" \
-            -H "Authorization: token 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" \
+            -H "Authorization: token ${{ secrets.GH_TOKEN }}" \
             $latest_artifacts_url | jq '.artifacts'
           )
 
