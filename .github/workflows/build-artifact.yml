@@ -1,0 +1,26 @@
+---
+name: Build Artifact
+
+on:
+  push:
+
+jobs:
+  build:
+    name: Build Artifact
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@5a4ac9002d0be2fb38bd78e4b4dbde5606d7042f
+
+      - name: Build artifact
+        run: |
+          mkdir build
+          echo "this is a test artifact" > build/test.txt
+          zip -r artifact.zip build
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@ee69f02b3dfdecd58bb31b4d133da38ba6fe3700  # v2.2.3
+        with:
+          name: build-artifact.zip
+          path: ./artifact.zip
+          if-no-files-found: error

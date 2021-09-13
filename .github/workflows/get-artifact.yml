@@ -1,0 +1,47 @@
+---
+name: Get Artifact
+
+on: 
+  workflow_dispatch:
+    inputs: {}
+
+jobs:
+  get-artifact:
+    name: Get Artifact
+    runs-on: ubunut-20.04
+    env:
+      _BRANCH: "main"
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@5a4ac9002d0be2fb38bd78e4b4dbde5606d7042f
+
+      - name: Get Download URL
+          workflows=$(curl \
+            -s -H "Accept: application/vnd.github.v3+json" \
+            -H "Authorization: token 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" \
+            https://api.github.com/repos/bitwarden/server/actions/runs \
+            | jq -c '.workflow_runs | map(select( .head_branch == "$_BRANCH" ))' 
+          )
+          #-H "Authorization: token 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" \
+
+          latest_workflow=$(echo $workflows | jq 'max_by(.updated_at | strptime("%Y-%m-%dT%H:%M:%SZ")|mktime)')
+
+          latest_artifacts_url=$(echo $latest_workflow | jq -r '.artifacts_url')
+
+          echo $latest_artifacts_url
+
+          latest_artifacts=$(curl \
+            -s -H "Accept: application/vnd.github.v3+json" \
+            -H "Authorization: token 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" \
+            $latest_artifacts_url | jq '.artifacts'
+          )
+
+          artifact_download_url=$(
+            echo $latest_artifacts | jq -r '.[] | select( .name == "docker-stub.zip").archive_download_url'
+          )
+
+          echo $artifact_download_url
+
+          curl -LO $artifact_download_url
+
+          ls -alth
