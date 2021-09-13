@@ -21,7 +21,7 @@ jobs:
           workflows=$(curl \
             -s -H "Accept: application/vnd.github.v3+json" \
             -H "Authorization: token ${{ secrets.GH_TOKEN }}" \
-            https://api.github.com/repos/bitwarden/server/actions/runs \
+            https://api.github.com/repos/$GITHUB_REPOSITORY/actions/runs \
             | jq -c --arg branch_name "$_BRANCH" '.workflow_runs | map(select( .head_branch == "$branch_name" ))' 
           )
           #-H "Authorization: token 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" \
