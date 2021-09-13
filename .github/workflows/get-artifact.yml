@@ -17,6 +17,7 @@ jobs:
         uses: actions/checkout@5a4ac9002d0be2fb38bd78e4b4dbde5606d7042f
 
       - name: Get Download URL
+        run: |
           workflows=$(curl \
             -s -H "Accept: application/vnd.github.v3+json" \
             -H "Authorization: token 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" \
