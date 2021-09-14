@@ -21,7 +21,7 @@ jobs:
       - name: Download build artifact
         uses: dawidd6/action-download-artifact@b9571484721e8187f1fd08147b497129f8972c74 # v2.14.0
         with:
-          workflow: build.yml
+          workflow: build-artifact.yml
           workflow_conclusion: success
           branch: ${{ env._BRANCH }}
           name: ${{ env._ARTIFACT_NAME }}
