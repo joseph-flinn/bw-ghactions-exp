@@ -22,7 +22,7 @@ jobs:
         run: |
           #workflows=$(curl \
           #  -s -H "Accept: application/vnd.github.v3+json" \
-          #  -H "Authorization: token ${{ secrets.GH_TOKEN }}" \
+          #  -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
           #  https://api.github.com/repos/$GITHUB_REPOSITORY/actions/runs \
           #  | jq -c --arg branch_name "$_BRANCH" '.workflow_runs | map(select( .head_branch == "$branch_name" ))' 
           #)
@@ -30,7 +30,7 @@ jobs:
           # Workflows
           curl \
             -s -H "Accept: application/vnd.github.v3+json" \
-            -H "Authorization: token ${{ secrets.GH_TOKEN }}" \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
             https://api.github.com/repos/$GITHUB_REPOSITORY/actions/runs > workflows.json
           cat workflows.json
 
@@ -41,14 +41,14 @@ jobs:
 
           #latest_artifacts=$(curl \
           #  -s -H "Accept: application/vnd.github.v3+json" \
-          #  -H "Authorization: token ${{ secrets.GH_TOKEN }}" \
+          #  -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
           #  $latest_artifacts_url | jq '.artifacts'
           #)
           
           # Latest Artifacts
           curl \
             -s -H "Accept: application/vnd.github.v3+json" \
-            -H "Authorization: token ${{ secrets.GH_TOKEN }}" \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
             $latest_artifacts_url > latest_artifacts.json
           cat latest_artifacts.json
           latest_artifacts=$(cat latest_artifacts.json | jq '.artifacts'
