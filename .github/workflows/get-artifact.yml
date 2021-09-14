@@ -18,33 +18,47 @@ jobs:
 
       - name: Get Download URL
         run: |
-          workflows=$(curl \
+          #workflows=$(curl \
+          #  -s -H "Accept: application/vnd.github.v3+json" \
+          #  -H "Authorization: token ${{ secrets.GH_TOKEN }}" \
+          #  https://api.github.com/repos/$GITHUB_REPOSITORY/actions/runs \
+          #  | jq -c --arg branch_name "$_BRANCH" '.workflow_runs | map(select( .head_branch == "$branch_name" ))' 
+          #)
+
+          # Workflows
+          curl \
             -s -H "Accept: application/vnd.github.v3+json" \
             -H "Authorization: token ${{ secrets.GH_TOKEN }}" \
-            https://api.github.com/repos/$GITHUB_REPOSITORY/actions/runs \
-            | jq -c --arg branch_name "$_BRANCH" '.workflow_runs | map(select( .head_branch == "$branch_name" ))' 
-          )
-          #-H "Authorization: token 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" \
+            https://api.github.com/repos/$GITHUB_REPOSITORY/actions/runs > workflows.json
+          cat workflows.json
 
+          workflows=$(cat workflows.json | jq -c --arg branch_name "$_BRANCH" '.workflow_runs | map(select( .head_branch == "$branch_name" ))')
           latest_workflow=$(echo $workflows | jq 'max_by(.updated_at | strptime("%Y-%m-%dT%H:%M:%SZ")|mktime)')
-
           latest_artifacts_url=$(echo $latest_workflow | jq -r '.artifacts_url')
-
           echo $latest_artifacts_url
 
-          latest_artifacts=$(curl \
+          #latest_artifacts=$(curl \
+          #  -s -H "Accept: application/vnd.github.v3+json" \
+          #  -H "Authorization: token ${{ secrets.GH_TOKEN }}" \
+          #  $latest_artifacts_url | jq '.artifacts'
+          #)
+          
+          # Latest Artifacts
+          curl \
             -s -H "Accept: application/vnd.github.v3+json" \
             -H "Authorization: token ${{ secrets.GH_TOKEN }}" \
-            $latest_artifacts_url | jq '.artifacts'
-          )
-
+            $latest_artifacts_url > latest_artifacts.json
+          cat latest_artifacts.json
+          latest_artifacts=$(cat latest_artifacts.json | jq '.artifacts'
+          
+          # Artifact Download URL
           artifact_download_url=$(
             echo $latest_artifacts \
               | jq -r --arg artifact_name "$_BUILD_ARTIFACT" '.[] | select( .name == "$artifact_name").archive_download_url'
           )
-
           echo $artifact_download_url
 
+          # Get Artifact
           curl -LO $artifact_download_url
 
           ls -alth
