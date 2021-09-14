@@ -26,6 +26,9 @@ jobs:
           branch: ${{ env._BRANCH }}
           name: ${{ env._ARTIFACT_NAME }}
 
+      - name: Test previous step
+        run: ls -atlh
+
       - name: Get Download URL
         if: false
         run: |
