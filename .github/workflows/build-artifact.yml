@@ -4,7 +4,6 @@ name: Build Artifact
 on:
   workflow_dispatch:
     inputs: {}
-  push:
 
 jobs:
   build:
