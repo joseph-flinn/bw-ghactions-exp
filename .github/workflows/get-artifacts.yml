@@ -21,7 +21,8 @@ jobs:
           workflow: build-artifact.yml
           workflow_conclusion: success
           branch: ${{ env._BRANCH }}
-          name: "build-artifact.zip,build-artifact-2.zip"
+          name: "build-artifact.zip,
+                 build-artifact-2.zip"
 
       - name: Test previous step
         run: ls -atlh
