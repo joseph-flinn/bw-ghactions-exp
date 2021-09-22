@@ -1,5 +1,5 @@
 ---
-name: Get Artifact
+name: Get Artifacts
 
 on: 
   workflow_dispatch:
@@ -7,7 +7,7 @@ on:
 
 jobs:
   get-artifact:
-    name: Get Artifact
+    name: Get Artifacts
     runs-on: ubuntu-20.04
     env:
       _BRANCH: "main"
