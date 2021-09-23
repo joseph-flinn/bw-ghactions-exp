@@ -19,6 +19,8 @@ jobs:
           echo "this is a test artifact" > build/test.txt
           zip -r artifact.zip build
 
+          echo "this is another test artifact" > test.txt
+
       - name: Upload artifact
         uses: actions/upload-artifact@ee69f02b3dfdecd58bb31b4d133da38ba6fe3700  # v2.2.3
         with:
@@ -38,4 +40,18 @@ jobs:
         with:
           name: "Terribly named artifact.zip"
           path: ./artifact.zip
+          if-no-files-found: error
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@ee69f02b3dfdecd58bb31b4d133da38ba6fe3700  # v2.2.3
+        with:
+          name: "text-artifact.txt"
+          path: ./test.txt
+          if-no-files-found: error
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@ee69f02b3dfdecd58bb31b4d133da38ba6fe3700  # v2.2.3
+        with:
+          name: "text-artifact-2.txt"
+          path: ./test.txt
           if-no-files-found: error
