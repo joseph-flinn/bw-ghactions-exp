@@ -21,7 +21,7 @@ jobs:
           workflow: build-artifact.yml
           workflow_conclusion: success
           branch: ${{ env._BRANCH }}
-          name: "build-artifact.zip,
+          artifacts: "build-artifact.zip,
                  *.txt"
 
       - name: Test previous step
