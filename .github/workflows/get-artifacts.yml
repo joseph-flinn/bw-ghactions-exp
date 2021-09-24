@@ -22,7 +22,7 @@ jobs:
           workflow_conclusion: success
           branch: ${{ env._BRANCH }}
           artifacts: "build-artifact.zip,
-                 *.txt"
+                      *.txt"
 
       - name: Test previous step
         run: ls -atlh
