@@ -16,12 +16,13 @@ jobs:
         uses: actions/checkout@5a4ac9002d0be2fb38bd78e4b4dbde5606d7042f
 
       - name: Download build artifact
-        uses: joseph-flinn/action-download-artifact@master
+        uses: bitwarden/gh-actions/download-artifacts@feature/add-artifact-download-action
         with:
           workflow: build-artifact.yml
           workflow_conclusion: success
           branch: ${{ env._BRANCH }}
-          name: "*.txt"
+          name: "build-artifact.zip,
+                 *.txt"
 
       - name: Test previous step
         run: ls -atlh
